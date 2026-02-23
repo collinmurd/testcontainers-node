@@ -14,7 +14,7 @@ These examples use the following libraries:
 
         npm install oracledb
 
-Recommended to use an image from [this registry](https://hub.docker.com/r/gvenzl/oracle-free) and susbtitute for `IMAGE`
+Recommended to use an image from [this registry](https://hub.docker.com/r/gvenzl/oracle-free) and substitute for `IMAGE`
 
 ### Start a database and execute queries
 
