@@ -56,12 +56,25 @@ describe.sequential("OracleFreeContainer", { timeout: 240_000 }, () => {
 
       await connection.close();
     });
+
+    it("should have default database name", async () => {
+      const connection = await oracledb.getConnection({
+        user: container.getUsername(),
+        password: container.getPassword(),
+        connectString: container.getUrl(),
+      });
+
+      const result = await connection.execute("SELECT SYS_CONTEXT('USERENV', 'CON_NAME') FROM DUAL");
+      expect(result.rows![0]).toEqual(["FREEPDB1"]);
+
+      await connection.close();
+    });
   });
 
-  it("should throw error when using invalid database names", () => {
+  it("should treat default database names as no-op and reject empty names", () => {
     const container = new OracleDbContainer(IMAGE);
-    expect(() => container.withDatabase("FREEPDB1")).toThrow('The default database "FREEPDB1" cannot be used');
-    expect(() => container.withDatabase("freepdb1")).toThrow('The default database "FREEPDB1" cannot be used');
+    expect(() => container.withDatabase("FREEPDB1")).not.toThrow();
+    expect(() => container.withDatabase("freepdb1")).not.toThrow();
     expect(() => container.withDatabase("")).toThrow("Database name cannot be empty.");
   });
 
@@ -77,8 +90,8 @@ describe.sequential("OracleFreeContainer", { timeout: 240_000 }, () => {
       .start();
 
     const connection = await oracledb.getConnection({
-      user: customUsername,
-      password: customPassword,
+      user: container.getUsername(),
+      password: container.getPassword(),
       connectString: container.getUrl(),
     });
 

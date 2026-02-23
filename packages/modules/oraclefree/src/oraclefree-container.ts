@@ -13,7 +13,7 @@ const DEFAULT_DATABASE = "FREEPDB1";
 export class OracleDbContainer extends GenericContainer {
   private username = "test";
   private password = "test";
-  private database?: string = undefined; // default database in the container
+  private database?: string = undefined;
 
   constructor(image: string) {
     super(image);
@@ -34,20 +34,17 @@ export class OracleDbContainer extends GenericContainer {
     return this;
   }
 
-  /**
-   * Sets a custom application database/service name.
-   *
-   * @throws if attempting to use the image default database name.
-   */
+  /** Sets a custom application database/service name. */
   public withDatabase(database: string): this {
     if (database.trim() === "") {
       throw new Error("Database name cannot be empty.");
     }
 
-    if (database.toUpperCase() === DEFAULT_DATABASE)
-      throw new Error(
-        `The default database "${DEFAULT_DATABASE}" cannot be used. Please choose a different name for the database.`
-      );
+    if (database.toUpperCase() === DEFAULT_DATABASE) {
+      this.database = undefined;
+      return this;
+    }
+
     this.database = database;
     return this;
   }
