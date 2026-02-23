@@ -58,9 +58,11 @@ describe.sequential("OracleFreeContainer", { timeout: 240_000 }, () => {
     });
   });
 
-  it("should throw error when using default database name", () => {
+  it("should throw error when using invalid database names", () => {
     const container = new OracleDbContainer(IMAGE);
     expect(() => container.withDatabase("FREEPDB1")).toThrow('The default database "FREEPDB1" cannot be used');
+    expect(() => container.withDatabase("freepdb1")).toThrow('The default database "FREEPDB1" cannot be used');
+    expect(() => container.withDatabase("")).toThrow("Database name cannot be empty.");
   });
 
   it("should set the custom database and user", async () => {

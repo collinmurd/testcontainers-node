@@ -40,7 +40,11 @@ export class OracleDbContainer extends GenericContainer {
    * @throws if attempting to use the image default database name.
    */
   public withDatabase(database: string): this {
-    if (database === DEFAULT_DATABASE)
+    if (database.trim() === "") {
+      throw new Error("Database name cannot be empty.");
+    }
+
+    if (database.toUpperCase() === DEFAULT_DATABASE)
       throw new Error(
         `The default database "${DEFAULT_DATABASE}" cannot be used. Please choose a different name for the database.`
       );
