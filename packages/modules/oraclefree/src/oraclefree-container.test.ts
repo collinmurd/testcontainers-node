@@ -4,10 +4,11 @@ import { OracleDbContainer, StartedOracleDbContainer } from "./oraclefree-contai
 
 const IMAGE = getImage(__dirname);
 
-describe.sequential("OracleFreeContainer", { timeout: 240_000 }, () => {
+describe("OracleFreeContainer", { timeout: 240_000 }, () => {
   describe("default configuration", () => {
     let container: StartedOracleDbContainer;
 
+    // start one container for all tests in this block to save on resources
     beforeAll(async () => {
       container = await new OracleDbContainer(IMAGE).start();
     }, 120_000);
