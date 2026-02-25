@@ -1,1 +1,1 @@
-FROM gvenzl/oracle-free:slim-faststart
+FROM gvenzl/oracle-free:23.26.1-slim-faststart
